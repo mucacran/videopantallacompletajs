@@ -23,22 +23,43 @@ function onYouTubeIframeAPIReady() {
 function onPlayerReady(event) {
   var player = event.target;
   iframe = $('#player');
-  setupListener(); 
 }
 
-// function setupListener (){
-//     $('button').addEventListener('click', playFullscreen);
+// function onPlayerReady(event){
+//     event.target.playVideo();
 // }
 
-function setupListener (){
-    $('button').addEventListener('click', playFullscreen);
-}
+
+
 
 function playFullscreen (){
   player.playVideo();//won't work on mobile
   
-  var requestFullScreen = iframe.requestFullScreen || iframe.mozRequestFullScreen || iframe.webkitRequestFullScreen;
+  var requestFullScreen = iframe.requestFullScreen || iframe.mozRequestFullScreen || iframe.webkitRequestFullScreen || msRequestFullscreen;
   if (requestFullScreen) {
     requestFullScreen.bind(iframe)();
+    var uno = requestFullScreen.bind(iframe)();
+    console.log(uno);
   }
 }
+
+
+
+// Find the right method, call on correct element
+function launchIntoFullscreen(element) {
+    if(element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if(element.mozRequestFullScreen) {
+      element.mozRequestFullScreen();
+    } else if(element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen();
+    } else if(element.msRequestFullscreen) {
+      element.msRequestFullscreen();
+    }
+  }
+  
+  // Launch fullscreen for browsers that support it!
+  launchIntoFullscreen(document.documentElement); // the whole page
+  launchIntoFullscreen(document.getElementById("videoElement")); // any individual element
+
+  //https://davidwalsh.name/fullscreen
